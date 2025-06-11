@@ -9,7 +9,7 @@ function App() {
     window.location.href = '/leetcode-comparator/index.html';
   };
   const handleRedirect1 = () => {
-    window.location.href = '/CFInsights-main/index.html';
+    window.location.href = '/CFcomparator/index.html';
   };
   return (
     <>
