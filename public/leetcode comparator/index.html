@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode Profile Comparison</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <h1 class="header__title">LeetCode Profile Comparison</h1>
+                <p class="header__subtitle">Compare coding statistics between two LeetCode users</p>
+            </div>
+        </header>
+
+        <!-- Input Section -->
+        <section class="input-section">
+            <div class="container">
+                <div class="input-form">
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label for="username1" class="form-label">First User</label>
+                            <input type="text" id="username1" class="form-control" placeholder="Enter LeetCode username">
+                        </div>
+                        <div class="form-group">
+                            <label for="username2" class="form-label">Second User</label>
+                            <input type="text" id="username2" class="form-control" placeholder="Enter LeetCode username">
+                        </div>
+                    </div>
+                    <button id="compareBtn" class="btn btn--primary btn--lg btn--full-width">
+                        Compare Profiles
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <section id="loadingSection" class="loading-section hidden">
+            <div class="container">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">Fetching user data...</p>
+            </div>
+        </section>
+
+        <!-- Error State -->
+        <section id="errorSection" class="error-section hidden">
+            <div class="container">
+                <div class="error-message">
+                    <h3>Error</h3>
+                    <p id="errorText"></p>
+                    <button id="retryBtn" class="btn btn--secondary">Try Again</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="resultsSection" class="results-section hidden">
+            <div class="container">
+                <!-- Profile Cards -->
+                <div class="profile-cards">
+                    <div class="profile-card" id="profile1">
+                        <div class="profile-header">
+                            <img class="profile-avatar" id="avatar1" src="" alt="User Avatar">
+                            <div class="profile-info">
+                                <h3 class="profile-name" id="name1"></h3>
+                                <p class="profile-username" id="username1Display"></p>
+                                <div class="profile-stats">
+                                    <div class="stat">
+                                        <span class="stat-value" id="ranking1"></span>
+                                        <span class="stat-label">Ranking</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value" id="reputation1"></span>
+                                        <span class="stat-label">Reputation</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-card" id="profile2">
+                        <div class="profile-header">
+                            <img class="profile-avatar" id="avatar2" src="" alt="User Avatar">
+                            <div class="profile-info">
+                                <h3 class="profile-name" id="name2"></h3>
+                                <p class="profile-username" id="username2Display"></p>
+                                <div class="profile-stats">
+                                    <div class="stat">
+                                        <span class="stat-value" id="ranking2"></span>
+                                        <span class="stat-label">Ranking</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value" id="reputation2"></span>
+                                        <span class="stat-label">Reputation</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Comparison -->
+                <div class="comparison-section">
+                    <h2>Problem Solving Statistics</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h4>Total Problems Solved</h4>
+                            <div class="stat-comparison">
+                                <div class="stat-bar">
+                                    <span class="stat-user">User 1</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="totalSolved1"></div>
+                                    </div>
+                                    <span class="stat-number" id="totalSolvedNum1"></span>
+                                </div>
+                                <div class="stat-bar">
+                                    <span class="stat-user">User 2</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="totalSolved2"></div>
+                                    </div>
+                                    <span class="stat-number" id="totalSolvedNum2"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <h4>Acceptance Rate</h4>
+                            <div class="stat-comparison">
+                                <div class="stat-bar">
+                                    <span class="stat-user">User 1</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="acceptanceRate1"></div>
+                                    </div>
+                                    <span class="stat-number" id="acceptanceRateNum1"></span>
+                                </div>
+                                <div class="stat-bar">
+                                    <span class="stat-user">User 2</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="acceptanceRate2"></div>
+                                    </div>
+                                    <span class="stat-number" id="acceptanceRateNum2"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <h4>Contest Rating</h4>
+                            <div class="stat-comparison">
+                                <div class="stat-bar">
+                                    <span class="stat-user">User 1</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="contestRating1"></div>
+                                    </div>
+                                    <span class="stat-number" id="contestRatingNum1"></span>
+                                </div>
+                                <div class="stat-bar">
+                                    <span class="stat-user">User 2</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="contestRating2"></div>
+                                    </div>
+                                    <span class="stat-number" id="contestRatingNum2"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <h2>Visual Comparison</h2>
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <h3>Problems by Difficulty</h3>
+                            <canvas id="difficultyChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>User 1 Distribution</h3>
+                            <canvas id="pieChart1"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>User 2 Distribution</h3>
+                            <canvas id="pieChart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
